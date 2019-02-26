@@ -11,22 +11,26 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-
   final PageController topPageControl = new PageController();
-  List<String> tabs = ["动态","打印","我的"];
+  List<String> tabs = ["动态", "打印", "我的"];
+  List<IconData> icons = [
+    Icons.print,
+    Icons.card_membership,
+    Icons.settings_ethernet
+  ];
 
   _renderTab() {
     List<Widget> list = new List();
     for (int i = 0; i < tabs.length; i++) {
-      list.add(new FlatButton(onPressed: () {
-        topPageControl.jumpTo(MediaQuery
-            .of(context)
-            .size
-            .width * i);
-      }, child: new Text(
-        tabs[i],
-        maxLines: 1,
-      )));
+      list.add(new FlatButton(
+        onPressed: () {
+          topPageControl.jumpTo(MediaQuery.of(context).size.width * i);
+        },
+        child: new Container(
+          height: 72,
+          child: Tab(icon: new Icon(icons[i], size: 20), text: tabs[i]),
+        ),
+      ));
     }
     return list;
   }
@@ -42,14 +46,17 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return new BottomTabsWidget(
+
         ///渲染tab
         tabItems: _renderTab(),
+
         ///渲染页面
         tabViews: _renderPage(),
         topPageControl: topPageControl,
         backgroundColor: Colors.black45,
         indicatorColor: Colors.white);
   }
+
   @override
   void initState() {
     // TODO: implement initState

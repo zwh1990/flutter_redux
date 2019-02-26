@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                             Fluttertoast.showToast(msg: "密码不能为空");
                             return;
                           }
-                          login(_userName,_password);
+                          login(_userName, _password);
                         },
                         child: Text("登录")),
                     new Padding(padding: new EdgeInsets.all(10)),
@@ -94,27 +94,25 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login(String name, String password) async {
-    var api = 'https://www.easy-mock.com/mock/5c6a7acd5c189d024fa5ec6e/getList';
+    var api = 'https://www.easy-mock.com/mock/5c6a7acd5c189d024fa5ec6e/login';
     Dio dio = new Dio();
     print("开始请求--->");
 
-    Navigator.push<String>(
-        context,
-        new MaterialPageRoute(
-            builder: (context) => new HomePage()));
+//    Navigator.push<String>(
+//        context, new MaterialPageRoute(builder: (context) => new HomePage()));
 
-    Map<String,String> params = new HashMap();
+    Map<String, String> params = new HashMap();
     params["name"] = name;
     params["password"] = password;
-    Response response = await dio.post(api, data:params);
+    Response response = await dio.post(api, data: params);
     print(response.data);
     var data = ResponseDataJson.fromJson(response.data);
-//    if (data.code == "0") {
-//      Navigator.push<String>(
-//          context,
-//          new MaterialPageRoute(
-//              builder: (context) => new HomePage()));
-//    }
+    if (data.code == "0") {
+      Navigator.push<String>(
+          context,
+          new MaterialPageRoute(
+              builder: (context) => new HomePage()));
+    }
   }
 
   @override
