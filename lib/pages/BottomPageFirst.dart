@@ -3,30 +3,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/biz/FistModuleBean.dart';
 import 'package:flutter_redux/biz/ResponseDataJson.dart';
+import 'package:flutter_redux/pages/FirstDetailWidget.dart';
+import 'package:flutter_redux/widgets/FirstSearchWidget.dart';
+import 'package:flutter_redux/widgets/material_search.dart';
+import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 class BottomPageFirst extends StatefulWidget {
   @override
   BottomPageFirstState createState() => new BottomPageFirstState();
 }
 
-class BottomPageFirstState extends State<BottomPageFirst> {
+class BottomPageFirstState extends State<BottomPageFirst>
+    with AutomaticKeepAliveClientMixin {
   ScrollController _controller = new ScrollController();
   List<FistModuleBean> list = new List();
   var currentPage = 1;
 
-  BottomPageFirstState() {
-    _controller.addListener(() {
-      var maxScroll = _controller.position.maxScrollExtent;
-      var pixels = _controller.position.pixels;
-
-      if (maxScroll == pixels && list.length < 100) {
-        setState(() {
-          _pullData();
-        });
-      }
-    });
-  }
-
+  final _names = ['张三', '李四'];
+  var _name;
 
   void _pullData() async {
     var api = 'https://www.easy-mock.com/mock/5c6a7acd5c189d024fa5ec6e/getList';
@@ -41,7 +35,6 @@ class BottomPageFirstState extends State<BottomPageFirst> {
         list.add(FistModuleBean.fromJson(value));
       }
     });
-
   }
 
   @override
@@ -52,13 +45,50 @@ class BottomPageFirstState extends State<BottomPageFirst> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('First'),
+        title: FirstSearchWidget("Fitst", Icons.search, () {
+          print("点击了搜索按钮");
+          Navigator.of(context)
+              .push(new MaterialPageRoute<String>(
+                  settings: new RouteSettings(
+                    name: 'material_search',
+                    isInitialRoute: false,
+                  ),
+                  builder: (BuildContext context) {
+                    return new Material(
+                      child: new MaterialSearch<String>(
+                        placeholder: '请输入内容',
+                        results: _names
+                            .map((String v) => new MaterialSearchResult<String>(
+                                  icon: Icons.person,
+                                  value: v,
+                                  text: "Mr(s). $v",
+                                ))
+                            .toList(),
+                        filter: (dynamic value, String criteria) {
+                          return value.toLowerCase().trim().contains(new RegExp(
+                              r'' + criteria.toLowerCase().trim() + ''));
+                        },
+                        onSelect: (dynamic value) =>
+                            Navigator.of(context).pop(value),
+                        onSubmit: (String value) =>
+                            Navigator.of(context).pop(value),
+                      ),
+                    );
+                  }))
+              .then((dynamic value) {
+            print("返回值value--->" + value);
+          });
+        }),
       ),
-      body: RefreshIndicator(
-          child: listViewLayoutSeparated(list), onRefresh: _onRefresh),
+      body: LazyLoadScrollView(
+          onEndOfPage: () => _pullData(), child: listViewLayoutSeparated(list)),
     );
   }
 
@@ -70,26 +100,65 @@ class BottomPageFirstState extends State<BottomPageFirst> {
         itemBuilder: (content, i) {
           return new InkWell(
             child: new Container(
-                height: 90.0,
-                child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                padding:
+                    EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
+                child: new Row(
                   children: <Widget>[
-                    new Text(
-                      "${"姓名:"+ list[i].name}",
-                      style: new TextStyle(fontSize: 14.0, color: Colors.red),
-                    ),
-                    new Text(
-                      "${"年龄:"+ list[i].age}",
-                      style: new TextStyle(fontSize: 14.0, color: Colors.green),
-                    ),
-                    new Text(
-                      "${"性别:"+ list[i].sex}",
-                      style: new TextStyle(fontSize: 14.0, color: Colors.blue),
-                    ),
+                    new Image.network(
+                        'https://upload.jianshu.io/users/upload_avatars/3884536/d847a50f1da0.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240',
+                        width: 60,
+                        height: 60),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            left: 10, top: 0, right: 0, bottom: 0)),
+                    new Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        new Row(
+                          children: <Widget>[
+                            new Text(
+                              "${"姓名:" + list[i].name}",
+                              style: new TextStyle(
+                                  fontSize: 14.0, color: Colors.red),
+                            ),
+                            Padding(
+                                padding: EdgeInsets.only(
+                                    left: 5, top: 0, right: 0, bottom: 0)),
+                            new Text(
+                              "${"年龄:" + list[i].age}",
+                              style: new TextStyle(
+                                  fontSize: 14.0, color: Colors.green),
+                            ),
+                            Padding(
+                                padding: EdgeInsets.only(
+                                    left: 5, top: 0, right: 0, bottom: 0)),
+                            new Text(
+                              "${"性别:" + list[i].sex}",
+                              style: new TextStyle(
+                                  fontSize: 14.0, color: Colors.blue),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(
+                                left: 0, top: 5, right: 0, bottom: 0)),
+                        Text(
+                          '身份证号码:123456789123456789',
+                          style:
+                              new TextStyle(fontSize: 14.0, color: Colors.blue),
+                        )
+                      ],
+                    )
                   ],
                 )),
             onTap: () {
-              print("---> $i");
+              Navigator.push<String>(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) =>
+                          new FirstDetailWidget(list[i].name, list[i].age)));
             },
           );
 //      return ;
@@ -127,17 +196,6 @@ class BottomPageFirstState extends State<BottomPageFirst> {
         itemCount: list.length);
   }
 
-
-  Future<void> _onRefresh() async {
-    await Future.delayed(Duration(seconds: 2), () {
-      print("开始刷新");
-      setState(() {
-        list.clear();
-        _pullData();
-      });
-    });
-  }
-
   @override
   void dispose() {
     // TODO: implement dispose
@@ -156,4 +214,3 @@ class BottomPageFirstState extends State<BottomPageFirst> {
     super.didChangeDependencies();
   }
 }
-

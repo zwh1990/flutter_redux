@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
       ),
       home: SplashPage(title: 'Splash Page'),
       routes: {},
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -28,7 +29,6 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
