@@ -40,8 +40,11 @@ class _SplashPageState extends State<SplashPage> {
             new Container(
               margin:
                   new EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
-              color: Colors.yellow,
-//              child: new Image(image: new AssetImage('static/images/welcome.png')),
+//              color: Colors.yellow,
+              child: new Image(
+                image: new AssetImage('images/welcome.png'),
+                fit: BoxFit.fill,
+              ),
             ),
             new Offstage(
                 offstage: false,

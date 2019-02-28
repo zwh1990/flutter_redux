@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/biz/FistModuleBean.dart';
 import 'package:flutter_redux/biz/ResponseDataJson.dart';
-import 'package:flutter_redux/pages/FirstDetailWidget.dart';
+import 'package:flutter_redux/pages/InputWidget.dart';
 import 'package:flutter_redux/widgets/FirstSearchWidget.dart';
 import 'package:flutter_redux/widgets/material_search.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
@@ -158,7 +158,7 @@ class BottomPageFirstState extends State<BottomPageFirst>
                   context,
                   new MaterialPageRoute(
                       builder: (context) =>
-                          new FirstDetailWidget(list[i].name, list[i].age)));
+                          new InputWidget()));
             },
           );
 //      return ;
