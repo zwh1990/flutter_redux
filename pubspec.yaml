@@ -24,6 +24,7 @@ dependencies:
   lazy_load_scrollview: ^0.0.1
   common_utils: ^1.0.9
   flutter_swiper : ^1.1.4
+  shared_preferences: ^0.4.2
 
 
 dev_dependencies:
@@ -46,8 +47,9 @@ flutter:
   - images/bg0.jpeg
   - images/bg1.jpeg
   - images/bg2.jpeg
-  - images/logo.svg
   - images/welcome.png
+  - images/clear.png
+  - images/setting.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -13,8 +13,33 @@ class BottomPageThreeState extends State<BottomPageThree> {
       appBar: new AppBar(
         title: new Text('Three'),
       ),
+      body: new Container(
+        padding: EdgeInsets.only(left: 10, top: 10, right: 10),
+        child: new Column(
+          children: <Widget>[
+            new ListTile(
+              leading: new Image(
+                  image: AssetImage('images/clear.png'), width: 40, height: 40),
+              title: new Text('设置'),
+              onTap: () {
+                print("点击了设置按钮--->");
+              },
+            ),
+            new Padding(padding: EdgeInsets.only(top: 10)),
+            new ListTile(
+              leading: new Image(
+                  image: AssetImage('images/clear.png'), width: 40, height: 40),
+              title: new Text('清理缓存'),
+              onTap: () {
+                print("点击了清理缓存按钮--->");
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
+
   @override
   void initState() {
     // TODO: implement initState
