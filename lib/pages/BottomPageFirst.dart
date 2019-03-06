@@ -56,34 +56,42 @@ class BottomPageFirstState extends State<BottomPageFirst>
           print("点击了搜索按钮");
           Navigator.of(context)
               .push(new MaterialPageRoute<String>(
-                  settings: new RouteSettings(
-                    name: 'material_search',
-                    isInitialRoute: false,
+              settings: new RouteSettings(
+                name: 'material_search',
+                isInitialRoute: false,
+              ),
+              builder: (BuildContext context) {
+                return new Material(
+                  child: new MaterialSearch<String>(
+                    placeholder: '请输入内容',
+                    results: _names
+                        .map((String v) =>
+                    new MaterialSearchResult<String>(
+                      icon: Icons.person,
+                      value: v,
+                      text: "$v",
+                    ))
+                        .toList(),
+                    filter: (dynamic value, String criteria) {
+                      return value.toLowerCase().trim().contains(new RegExp(
+                          r'' + criteria.toLowerCase().trim() + ''));
+                    },
+                    onSelect: (dynamic value) =>
+                        Navigator.of(context).pop(value),
+                    onSubmit: (String value) =>
+                        Navigator.of(context).pop(value),
                   ),
-                  builder: (BuildContext context) {
-                    return new Material(
-                      child: new MaterialSearch<String>(
-                        placeholder: '请输入内容',
-                        results: _names
-                            .map((String v) => new MaterialSearchResult<String>(
-                                  icon: Icons.person,
-                                  value: v,
-                                  text: "Mr(s). $v",
-                                ))
-                            .toList(),
-                        filter: (dynamic value, String criteria) {
-                          return value.toLowerCase().trim().contains(new RegExp(
-                              r'' + criteria.toLowerCase().trim() + ''));
-                        },
-                        onSelect: (dynamic value) =>
-                            Navigator.of(context).pop(value),
-                        onSubmit: (String value) =>
-                            Navigator.of(context).pop(value),
-                      ),
-                    );
-                  }))
+                );
+              }))
               .then((dynamic value) {
             print("返回值value--->" + value);
+            if (!_names.contains(value)) {
+              _names.add(value);
+            }
+
+            setState(() {
+
+            });
           });
         }),
       ),
@@ -101,7 +109,7 @@ class BottomPageFirstState extends State<BottomPageFirst>
           return new InkWell(
             child: new Container(
                 padding:
-                    EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
+                EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
                 child: new Row(
                   children: <Widget>[
                     new Image.network(
@@ -147,7 +155,7 @@ class BottomPageFirstState extends State<BottomPageFirst>
                         Text(
                           '身份证号码:123456789123456789',
                           style:
-                              new TextStyle(fontSize: 14.0, color: Colors.blue),
+                          new TextStyle(fontSize: 14.0, color: Colors.blue),
                         )
                       ],
                     )
@@ -157,8 +165,7 @@ class BottomPageFirstState extends State<BottomPageFirst>
               Navigator.push<String>(
                   context,
                   new MaterialPageRoute(
-                      builder: (context) =>
-                          new InputWidget()));
+                      builder: (context) => new InputWidget()));
             },
           );
 //      return ;

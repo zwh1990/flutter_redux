@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/biz/ResponseDataJson.dart';
 import 'package:flutter_redux/pages/HomePage.dart';
 import 'package:flutter_redux/src/Constant.dart';
+import 'package:flutter_redux/src/LocalStorage.dart';
 import 'package:flutter_redux/widgets/InputWidget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -127,11 +128,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void getUserAndPassword() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _userName = prefs.getString(Constant.NAME);
-    _password = prefs.getString(Constant.PASSWORD);
-    userController = new TextEditingController(text: _userName ?? "");
-    pwController = new TextEditingController(text: _password ?? "");
+    _userName =  await LocalStorage.get(Constant.NAME);
+    _password = await LocalStorage.get(Constant.PASSWORD);
+    userController.value = new TextEditingValue(text: _userName ?? "");
+    pwController.value = new TextEditingValue(text: _password ?? "");
   }
 
   @override

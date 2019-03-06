@@ -36,7 +36,6 @@ class InputWidgetState extends State<InputWidget> {
       controller: widget.controller,
       onChanged: widget.onChanged,
       obscureText: widget.obscureText,
-      autofocus: true,
       decoration: new InputDecoration(
           hintText: widget.hintText,
           icon: widget.iconData == null ? null : new Icon(widget.iconData)),

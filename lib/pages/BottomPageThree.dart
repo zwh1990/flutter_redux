@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/widgets/CustomDialogWidget.dart';
 
 class BottomPageThree extends StatefulWidget {
   @override
@@ -32,6 +33,17 @@ class BottomPageThreeState extends State<BottomPageThree> {
               title: new Text('清理缓存'),
               onTap: () {
                 print("点击了清理缓存按钮--->");
+                showEditDialog(
+                  context,
+                  "您要清理缓存吗?",
+                  (String value) {
+                    print("value--->" + value);
+                  },
+                  () {
+                    print("点击了确定按钮");
+                  },
+                  new TextEditingController(),
+                );
               },
             )
           ],
@@ -62,5 +74,21 @@ class BottomPageThreeState extends State<BottomPageThree> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+  }
+
+  Future<Null> showEditDialog(
+      BuildContext context,
+      String title,
+      ValueChanged<String> editChanged,
+      VoidCallback onPressed,
+      TextEditingController editingController) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext) {
+          return new Center(
+            child: new CustomDialogWidget(
+                title, editChanged, onPressed, editingController),
+          );
+        });
   }
 }

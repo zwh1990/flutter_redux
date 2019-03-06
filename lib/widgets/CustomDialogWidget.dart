@@ -27,7 +27,6 @@ class CustomDialogWidgetState extends State<CustomDialogWidget> {
         child: new Container(
           //获取屏幕的高度和宽度
           height: MediaQuery.of(context).size.height,
-
           width: MediaQuery.of(context).size.width,
           color: Colors.black12,
 
@@ -51,7 +50,7 @@ class CustomDialogWidgetState extends State<CustomDialogWidget> {
                         padding: EdgeInsets.only(top: 5.0, bottom: 15.0),
                         child: new Center(
                           child: new Text(
-                            "标题",
+                            widget.title,
                             style: new TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -59,7 +58,7 @@ class CustomDialogWidgetState extends State<CustomDialogWidget> {
 
                       //编辑输入框
                       new Container(
-                        height: MediaQuery.of(context).size.height * 3 / 4,
+                        height: MediaQuery.of(context).size.height * 1 / 4,
                         decoration: new BoxDecoration(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0)),
@@ -76,12 +75,74 @@ class CustomDialogWidgetState extends State<CustomDialogWidget> {
                                 maxLines: 100,
                                 controller: widget.editingController,
                                 onChanged: widget.editChanged,
-                                  decoration:new InputDecoration.collapsed(hintText: null)
+                                decoration: new InputDecoration.collapsed(
+                                    hintText: "请输入内容",
+                                    hintStyle: TextStyle(
+                                      color: Color(0xff959595),
+                                      fontSize: 16.0,
+                                    )),
+                                style: TextStyle(
+                                  color: Color(0xff959595),
+                                  fontSize: 16.0,
+                                ),
                               ),
                             )
                           ],
                         ),
                       ),
+
+                      //确定和取消按钮
+                      new Container(
+                        height: 10.0,
+                      ),
+                      new Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          //取消
+                          new Expanded(
+                              child: new RawMaterialButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                            padding: EdgeInsets.all(4.0),
+                            constraints: new BoxConstraints(
+                                minWidth: 0.0, minHeight: 0.0),
+                            child: new Text(
+                              "取消",
+                              style: TextStyle(
+                                color: Color(0xff959595),
+                                fontSize: 16.0,
+                              ),
+                            ),
+                          )),
+
+                          new Container(
+                            width: 0.3,
+                            height: 25.0,
+                            color: Color(0xff959595),
+                          ),
+
+                          new Expanded(
+                              child: new RawMaterialButton(
+                            onPressed: widget.onPressed,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                            padding: EdgeInsets.all(4.0),
+                            constraints: new BoxConstraints(
+                                minWidth: 0.0, minHeight: 0.0),
+                            child: new Text(
+                              "确定",
+                              style: TextStyle(
+                                color: Color(0xFF121917),
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )),
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -106,7 +167,7 @@ class CustomDialogWidgetState extends State<CustomDialogWidget> {
   }
 
   @override
-  void didUpdateWidget(CustomDialogWieget oldWidget) {
+  void didUpdateWidget(CustomDialogWidget oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
   }
